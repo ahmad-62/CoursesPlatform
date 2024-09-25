@@ -1,0 +1,77 @@
+﻿@model CoursesManagament.Models.Units
+
+@{
+    ViewData["Title"] = "Add";
+    SelectList Numbers = new SelectList(ViewBag.Numbers);
+}
+
+<h1>Add Unit </h1>
+
+<h4>Units</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+
+                <input type="hidden" asp-for="CourseId" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label>Choose The number of lessons of this unit</label>
+                <select id="numberDropdown" asp-items="Numbers" class="form-control custom-dropdown"></select>
+            </div>
+            <div id="inputContainer"></div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" onclick="this.disabled=true; this.value='Submitting...'; this.form.submit();" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById("numberDropdown").addEventListener("change", function () {
+            var numberOfInputs = parseInt(this.value);
+            var container = document.getElementById("inputContainer");
+            container.innerHTML = ""; // Clear previous inputs
+
+            for (var i = 1; i <= numberOfInputs; i++) {
+                var div = document.createElement("div");
+                div.className = "form-group";
+                var label = document.createElement("label");
+                label.innerHTML = "Lesson Title " + i;
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Lessons[" + (i - 1) + "].Title"; // Ensure correct naming for model binding
+                input.className = "form-control";
+                div.appendChild(label);
+                div.appendChild(input);
+                container.appendChild(div);
+            }
+        });
+        document.getElementById("submitButton").addEventListener("click", function () {
+            this.disabled = true;
+            this.value = 'Submitting...';
+            document.forms[0].submit();
+        });
+
+    </script>
+
+
+}

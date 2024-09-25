@@ -1,0 +1,124 @@
+﻿@model List<Course>
+
+@{
+    ViewData["Title"] = "Courses";
+    SelectList CategoryList = new SelectList(ViewBag.Categories, "Id", "Name");
+    SelectList TrainerList = new SelectList(ViewBag.Trainers, "Id", "Name");
+}
+
+<h1>Courses</h1>
+<p>
+    <a asp-action="Add" class="btn btn-info">Create New</a>
+</p>
+@if (@ViewBag.Role == "Admin")
+{
+    @using (Html.BeginForm("Index", "Course", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="form-group">
+            <input type="text" name="query" placeholder="Search by name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <label for="id" class="control-label">Trainer</label>
+                <select name="id" asp-items="TrainerList" class="form-control">
+                    <option value="">--Select Trainer--</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="categoryId" class="control-label">Category</label>
+                <select name="categoryId" asp-items="CategoryList" class="form-control">
+                    <option value="">--Select Category--</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+
+        <p></p>
+}
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+    
+            <th>Name
+            </th>
+            <th>
+                Descripition
+            </th>
+            <th>Price</th>
+            <th>
+                Category
+            </th>
+            <th>
+                Trainer
+            </th>
+            <th>CreationTime</th>
+            <th>Image</th>
+            <th>Trainees</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripition)
+            </td>
+            <td>@item.Price</td>
+                <td>@item.Category.Name</td>
+                <td>@item.Trainer.Name</td>
+                <td>@item.CreationDate</td>
+                <td>
+                    <img src="@item.ImageId" alt="Course Image" style="max-width: 50px; height: auto;" />
+                </td>
+                <td><a href="/Trainee/index/@item.Id" class="btn btn-info">Trainees</a></td>
+
+            <td>
+                <a href="/Course/edit/@item.Id">Edit</a>  |
+                <a href="/Unit/Index?courseId=@item.Id">Details</a> |
+                    <a href="#" class="delete-link" data-toggle="modal" data-target="#DeleteModal" data-id="@item.Id">
+                        Delete
+                    </a></td>
+                <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are You Sure?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">You will delete the course.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger" id="confirmDelete" href="#">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+        </tr>
+}
+    </tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.delete-link').click(function () {
+            var courseId = $(this).data('id'); // Extract course ID from the clicked link
+            var deleteUrl = '/Course/Delete/' + courseId; // Create the delete URL
+            $('#confirmDelete').attr('href', deleteUrl); // Set the delete URL in the modal
+        });
+    });
+</script>
+
+

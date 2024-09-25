@@ -1,0 +1,49 @@
+﻿@model Course
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "~/Views/Shared/_ClientsideLayout.cshtml";
+}
+
+
+<div class="container px-4 px-lg-5">
+    <!-- Heading Row-->
+    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+        <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="@Model.ImageId" alt="..." /></div>
+        <div class="col-lg-5">
+            <h1 class="font-weight-light">@Model.Descripition</h1>
+            <p><b>Trainer:</b>@Model.Trainer.Name</p>
+            <p><b>Price:</b>@Model.Price</p>
+            <a class="btn btn-primary" href="/Course/Subscribe/@Model.Id">Subscribe</a>
+        </div>
+    </div>
+    @if (ViewBag.Msg != null)
+    {
+        <div class="alert alert-info">
+            @ViewBag.Msg
+        </div>
+    }
+    <!-- Call to Action-->
+    <div class="card text-white bg-secondary my-5 py-4 text-center">
+        <div class="card-body"><p class="text-white m-0">The Units Of This Course</p></div>
+    </div>
+  
+
+    @foreach(var item in ViewBag.Units){
+   <div class="row gx-4 gx-lg-5">
+        <div class="col-md-4 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="card-title">@item.Name</h2>
+                    <ul>
+                            @foreach (var lesson in item.Lessons)
+                            {
+                                <li>@lesson.Title</li>
+                            }
+                        </ul>
+                        </div>
+                   
+            </div>
+        </div>
+        </div>
+        }
+       

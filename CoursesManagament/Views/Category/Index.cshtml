@@ -1,0 +1,90 @@
+﻿@model IEnumerable<CoursesManagament.Models.Category>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<h1>Categories</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="Category">Create New</a>
+</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                ParentName
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+             
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Parent.Name)
+                </td>
+                <td>
+                    <a href="/Category/Edit/@item.Id">Edit</a> |
+                    <a href="#" class="delete-link" data-toggle="modal" data-target="#DeleteModal" data-id="@item.Id">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are You Sure?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">You will delete this Category.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" id="confirmDelete" href="#">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.delete-link').click(function () {
+            var categoryId = $(this).data('id');
+            var deleteUrl = '/Category/Delete/' + categoryId;
+            $('#confirmDelete').attr('href', deleteUrl);
+        });
+    });
+</script>

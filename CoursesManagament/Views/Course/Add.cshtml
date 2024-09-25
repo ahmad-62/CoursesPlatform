@@ -1,0 +1,71 @@
+﻿@model CoursesManagament.Models.Course
+
+@{
+    ViewData["Title"] = "AddCourse";
+    SelectList CategoryList = new SelectList(ViewBag.Categories, "Id", "Name");
+    SelectList TrainerList = new SelectList(ViewBag.Trainers, "Id", "Name");
+
+
+}
+
+<h1>AddCourse</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripition" class="control-label"></label>
+                <input asp-for="Descripition" class="form-control" />
+                <span asp-validation-for="Descripition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label">Category</label>
+                <select asp-for="CategoryId" asp-items="CategoryList" class="form-control custom-dropdown"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>@if (ViewBag.Role == "Admin")
+            {
+                <div class="form-group">
+                    <label asp-for="TrainerId" class="control-label">Trainer</label>
+                <select asp-for="TrainerId" asp-items="TrainerList" class="form-control custom-dropdown"></select>
+                <span asp-validation-for="TrainerId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <input type="hidden"value="@ViewBag.trainerid" asp-for="TrainerId" asp-items="TrainerList" class="form-control custom-dropdown"></input>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="ImageFile"></label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

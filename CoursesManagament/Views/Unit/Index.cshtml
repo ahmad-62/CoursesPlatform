@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CoursesManagament.Models.Units>
+
+@{
+    ViewData["Title"] = "Units";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Course Units</h1>
+
+<p>
+    <a href="/Unit/Add?CourseId=@ViewBag.CourseId">+ Add Unit</a>
+</p>
+<div  id="div1"></div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a href="/Unit/edit/@item.Id">Edit</a> |
+                    <input type="button" value="Details" onclick="GetDetails(@item.Id)">
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts {
+    <script>
+        function GetDetails(unitid) {
+            $.ajax({
+                url: "/Unit/Details/" + unitid,
+                success: function (result) {
+                    $("#div1").html(result);
+                    console.log(result);
+                }
+            });
+        }
+    </script>
+}

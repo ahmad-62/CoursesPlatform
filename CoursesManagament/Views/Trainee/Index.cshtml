@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CoursesManagament.Models.TraineeCourse>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Trainees</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainee.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainee.LastName)
+            </th>
+            <th> Email</th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count() > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Trainee.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Trainee.LastName)
+                    </td>
+                    <td>
+                        @item.Trainee.Email
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationDate)
+                    </td>
+                  
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">
+                    <div class="alert alert-danger">
+                        There are no trainees found in this course.
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

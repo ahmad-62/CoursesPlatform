@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Lesson>
+
+
+<body>
+    <table class="table">
+        <table class="table" style="border:double">
+            <thead class="table-success">
+                <tr>
+
+                    <th>Lessons Of @ViewBag.Unit.Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lesson in Model)
+                {
+                    <tr>
+                        <td>@lesson.Title</td>
+                        
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        </div>
+
+    </table>
+</body>
